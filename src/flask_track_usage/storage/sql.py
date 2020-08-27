@@ -91,6 +91,10 @@ class SQLStorage(Storage):
         self.sum_tables = {}
         self._con = None
         with self._eng.begin() as self._con:
+            """
+            We suppose the following table is defined in your app's models.py file.
+            This allows to fix some column sizing issues...
+            
             if not self._con.dialect.has_table(self._con, table_name):
                 self.track_table = sql.Table(
                     table_name, self._metadata,
@@ -116,8 +120,9 @@ class SQLStorage(Storage):
                 # Create the table if it does not exist
                 self.track_table.create(bind=self._eng)
             else:
-                self._metadata.reflect(bind=self._eng)
-                self.track_table = self._metadata.tables[table_name]
+            """
+            self._metadata.reflect(bind=self._eng)
+            self.track_table = self._metadata.tables[table_name]
 
     def store(self, data):
         """
